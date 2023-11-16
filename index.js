@@ -26,8 +26,22 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
     // Send a ping to confirm a successful connection
+
+    const panjabiCollection = client.db('jannatPanjabiDB').collection("panjabi")
+    const reviewCollection = client.db('jannatPanjabiDB').collection("reviews")
     await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
+    // get all panjabi route
+    app.get('/panjabi', async(req, res) => {
+      const result = await panjabiCollection.find().toArray();
+      res.send(result)
+    })
+    // get review route
+    app.get('/reviews', async(req, res) => {
+      const result = await reviewCollection.find().toArray()
+      res.send(result)
+    })
+
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
